@@ -8,13 +8,11 @@
 import Foundation
 
 struct AuthResponse: Codable {
+    var auth: Bool
     var token: String
     
-    enum CodingKeys: String, CodingKey {
-        case token = "x-access-token"
-    }
-    
-    init(token: String) {
+    init(auth: Bool, token: String) {
+        self.auth = auth
         self.token = token
     }
 }

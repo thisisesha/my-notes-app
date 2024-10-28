@@ -64,6 +64,7 @@ class LoginScreenView: UIView {
         emailText = UITextField()
         emailText.placeholder = "Email"
         emailText.borderStyle = .roundedRect
+        emailText.autocapitalizationType = .none
         emailText.translatesAutoresizingMaskIntoConstraints = false
         contentWrapper.addSubview(emailText)
     }
@@ -72,6 +73,7 @@ class LoginScreenView: UIView {
         passwordText = UITextField()
         passwordText.placeholder = "Password"
         passwordText.borderStyle = .roundedRect
+        passwordText.autocapitalizationType = .none
         passwordText.translatesAutoresizingMaskIntoConstraints = false
         contentWrapper.addSubview(passwordText)
     }

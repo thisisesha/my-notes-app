@@ -25,14 +25,21 @@ class AllAPIs{
             
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(url, method: .post, parameters: parameters)
-            .responseDecodable(of: AuthResponse.self) { response in
-                switch response.result {
-                    case .success(let authResponse):
-                        continuation.resume(returning: authResponse.token)
-                    case .failure(let error):
-                        continuation.resume(throwing: error)
+                .responseData { response in
+                    if let data = response.data,
+                       let json = String(data: data, encoding: .utf8) {
+                        print("Raw JSON response: \(json)")
+                    }
                 }
-            }
+                .responseDecodable(of: AuthResponse.self) { response in
+                    switch response.result {
+                        case .success(let authResponse):
+                            continuation.resume(returning: authResponse.token)
+                        case .failure(let error):
+                            print("Failed with error: \(error)")
+                            continuation.resume(throwing: error)
+                    }
+                }
         }
     }
     
@@ -46,14 +53,21 @@ class AllAPIs{
             
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(url, method: .post, parameters: parameters)
-            .responseDecodable(of: AuthResponse.self) { response in
-                switch response.result {
-                    case .success(let authResponse):
-                        continuation.resume(returning: authResponse.token)
-                    case .failure(let error):
-                        continuation.resume(throwing: error)
+                .responseData { response in  
+                    if let data = response.data,
+                       let json = String(data: data, encoding: .utf8) {
+                        print("Raw JSON response: \(json)")
                     }
-            }
+                }
+                .responseDecodable(of: AuthResponse.self) { response in
+                    switch response.result {
+                        case .success(let authResponse):
+                            continuation.resume(returning: authResponse.token)
+                        case .failure(let error):
+                            print("Failed with error: \(error)")
+                            continuation.resume(throwing: error)
+                    }
+                }
         }
     }
     
