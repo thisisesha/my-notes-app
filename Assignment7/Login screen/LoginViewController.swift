@@ -1,14 +1,14 @@
 //
-//  ViewController.swift
+//  LoginViewController.swift
 //  Assignment7
 //
-//  Created by Esha Chiplunkar on 10/25/24.
+//  Created by Esha Chiplunkar on 10/28/24.
 //
 
 import UIKit
 
-class ViewController: UIViewController {
-    
+class LoginViewController: UIViewController {
+
     let loginView = LoginScreenView()
     
     override func loadView() {
@@ -56,7 +56,7 @@ class ViewController: UIViewController {
                     await MainActor.run {
                         setLoading(false)
                         print("logged in")
-                        navigateToNotesPage()
+                       // navigateToNotesPage()
                     }
                 } catch {
                     print("Login error: \(error)")
@@ -70,10 +70,6 @@ class ViewController: UIViewController {
         }
     }
     
-    func navigateToNotesPage() {
-        let notesVC = NotesViewController()
-        navigationController?.pushViewController(notesVC, animated: true)
-    }
     
     @objc func registerButtonTapped() {
         let registerVC = RegisterViewController()
@@ -104,4 +100,3 @@ class ViewController: UIViewController {
     }
 
 }
-

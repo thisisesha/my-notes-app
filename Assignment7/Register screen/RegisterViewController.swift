@@ -72,7 +72,7 @@ class RegisterViewController: UIViewController {
                     await MainActor.run {
                         setLoading(false)
                         print("registered")
-                        navigateToNotesPage()
+                      //  navigateToNotesPage()
                     }
                 } catch {
                     print("Sign up error: \(error)")
@@ -89,11 +89,6 @@ class RegisterViewController: UIViewController {
     @objc func loginButtonTapped() {
        // let loginVC = ViewController()
         navigationController?.popViewController(animated: true)
-    }
-
-    func navigateToNotesPage() {
-        let notesVC = NotesViewController()
-        navigationController?.pushViewController(notesVC, animated: true)
     }
     
     func isValidEmail(_ email: String) -> Bool {
