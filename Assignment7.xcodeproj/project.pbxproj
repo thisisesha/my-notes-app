@@ -15,7 +15,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		94B1F3512CCC8D9800B47880 /* Exceptions for "Assignment7" folder in "Assignment7" target */ = {
+		94B1F4032CD0550F00B47880 /* Exceptions for "Assignment7" folder in "Assignment7" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -25,10 +25,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		94B1F3412CCC8D9500B47880 /* Assignment7 */ = {
+		94B1F3EF2CD0550E00B47880 /* Assignment7 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				94B1F3512CCC8D9800B47880 /* Exceptions for "Assignment7" folder in "Assignment7" target */,
+				94B1F4032CD0550F00B47880 /* Exceptions for "Assignment7" folder in "Assignment7" target */,
 			);
 			path = Assignment7;
 			sourceTree = "<group>";
@@ -50,8 +50,8 @@
 		94B1F3362CCC8D9500B47880 = {
 			isa = PBXGroup;
 			children = (
-				94B1F3412CCC8D9500B47880 /* Assignment7 */,
 				94B1F3402CCC8D9500B47880 /* Products */,
+				94B1F3EF2CD0550E00B47880 /* Assignment7 */,
 			);
 			sourceTree = "<group>";
 		};
@@ -79,7 +79,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				94B1F3412CCC8D9500B47880 /* Assignment7 */,
+				94B1F3EF2CD0550E00B47880 /* Assignment7 */,
 			);
 			name = Assignment7;
 			packageProductDependencies = (

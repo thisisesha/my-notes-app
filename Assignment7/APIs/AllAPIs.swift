@@ -90,18 +90,23 @@ class AllAPIs{
     
     func getAllNotes(token: String) async throws -> [Note] {
         let url = "\(notesBaseURL)/getall"
-        let headers: HTTPHeaders = ["x-access-token": token]
             
         return try await withCheckedThrowingContinuation { continuation in
+            let headers: HTTPHeaders = ["x-access-token": token]
+            
             AF.request(url, method: .get, headers: headers)
-            .responseDecodable(of: [Note].self) { response in
+                .responseDecodable(of: NotesResponse.self) { response in
+                if let data = response.data, let str = String(data: data, encoding: .utf8) {
+                    print("Raw response: \(str)")
+                }
+                
                 switch response.result {
-                    case .success(let notes):
-                        continuation.resume(returning: notes)
+                    case .success(let notesResponse):
+                    continuation.resume(returning: notesResponse.notes)
                     case .failure(let error):
                         continuation.resume(throwing: error)
-                    }
                 }
+            }
         }
     }
     
@@ -113,6 +118,10 @@ class AllAPIs{
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(url, method: .post, parameters: parameters, headers: headers)
             .responseDecodable(of: Note.self) { response in
+                if let data = response.data,
+                   let json = String(data: data, encoding: .utf8) {
+                    print("Raw JSON response: \(json)")
+                }
                 switch response.result {
                     case .success(let note):
                         continuation.resume(returning: note)
@@ -131,6 +140,10 @@ class AllAPIs{
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(url, method: .post, parameters: parameters, headers: headers)
             .response { response in
+                if let data = response.data,
+                   let json = String(data: data, encoding: .utf8) {
+                    print("Raw JSON response: \(json)")
+                }
                 if let error = response.error {
                     continuation.resume(throwing: error)
                 } else {

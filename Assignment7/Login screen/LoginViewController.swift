@@ -10,6 +10,7 @@ import UIKit
 class LoginViewController: UIViewController {
 
     let loginView = LoginScreenView()
+    let notificationCenter = NotificationCenter.default
     
     override func loadView() {
         view = loginView
@@ -56,7 +57,7 @@ class LoginViewController: UIViewController {
                     await MainActor.run {
                         setLoading(false)
                         print("logged in")
-                       // navigateToNotesPage()
+                        notificationCenter.post(name: .loggedIn, object: nil)
                     }
                 } catch {
                     print("Login error: \(error)")
@@ -73,7 +74,8 @@ class LoginViewController: UIViewController {
     
     @objc func registerButtonTapped() {
         let registerVC = RegisterViewController()
-        navigationController?.pushViewController(registerVC, animated: true)
+        registerVC.modalPresentationStyle = .fullScreen
+        present(registerVC, animated: true)
     }
     
     func isValidEmail(_ email: String) -> Bool {
@@ -100,3 +102,4 @@ class LoginViewController: UIViewController {
     }
 
 }
+

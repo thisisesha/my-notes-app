@@ -10,6 +10,7 @@ import UIKit
 class RegisterViewController: UIViewController {
     
     let registerView = RegisterView()
+    let notificationCenter = NotificationCenter.default
     
     override func loadView() {
         view = registerView
@@ -72,7 +73,7 @@ class RegisterViewController: UIViewController {
                     await MainActor.run {
                         setLoading(false)
                         print("registered")
-                      //  navigateToNotesPage()
+                        notificationCenter.post(name: .registered, object: nil)
                     }
                 } catch {
                     print("Sign up error: \(error)")
@@ -87,8 +88,7 @@ class RegisterViewController: UIViewController {
     }
     
     @objc func loginButtonTapped() {
-       // let loginVC = ViewController()
-        navigationController?.popViewController(animated: true)
+        dismiss(animated: true)
     }
     
     func isValidEmail(_ email: String) -> Bool {
