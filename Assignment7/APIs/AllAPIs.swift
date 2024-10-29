@@ -117,14 +117,14 @@ class AllAPIs{
             
         return try await withCheckedThrowingContinuation { continuation in
             AF.request(url, method: .post, parameters: parameters, headers: headers)
-            .responseDecodable(of: Note.self) { response in
+                .responseDecodable(of: AddNoteResponse.self) { response in
                 if let data = response.data,
                    let json = String(data: data, encoding: .utf8) {
                     print("Raw JSON response: \(json)")
                 }
                 switch response.result {
-                    case .success(let note):
-                        continuation.resume(returning: note)
+                    case .success(let noteResponse):
+                    continuation.resume(returning: noteResponse.note)
                     case .failure(let error):
                         continuation.resume(throwing: error)
                     }

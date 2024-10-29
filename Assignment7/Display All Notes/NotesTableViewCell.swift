@@ -40,6 +40,7 @@ class NotesTableViewCell: UITableViewCell {
         self.addSubview(labelDesc)
     }
     
+    
     func initConstraints(){
         NSLayoutConstraint.activate([
                 
@@ -48,7 +49,7 @@ class NotesTableViewCell: UITableViewCell {
             labelDesc.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -25),
             labelDesc.heightAnchor.constraint(equalToConstant: 20),
             labelDesc.widthAnchor.constraint(lessThanOrEqualTo: self.safeAreaLayoutGuide.widthAnchor),
-                
+            
         ])
     }
 

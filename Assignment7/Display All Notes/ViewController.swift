@@ -37,6 +37,11 @@ class ViewController: UIViewController {
                                               action: #selector(profileIconTapped))
         navigationItem.leftBarButtonItem = profileIcon
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .add, target: self,
+            action: #selector(onAddBarButtonTapped)
+        )
+        
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboardOnTap))
         tapRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(tapRecognizer)
@@ -44,6 +49,7 @@ class ViewController: UIViewController {
         notesView.tableViewNote.dataSource = self
         notesView.tableViewNote.delegate = self
         notesView.tableViewNote.register(NotesTableViewCell.self, forCellReuseIdentifier: "notes")
+        
         
         notificationCenter.addObserver(
                     self,
@@ -57,12 +63,30 @@ class ViewController: UIViewController {
                     name: .registered,
                     object: nil)
         
+        notificationCenter.addObserver(
+                    self,
+                    selector: #selector(notificationReceivedForNoteAdded(notification:)),
+                    name: .noteAdded,
+                    object: nil)
+        
+    }
+    
+    @objc func onAddBarButtonTapped() {
+        let addNoteVC = AddNoteController()
+        navigationController?.pushViewController(addNoteVC, animated: true)
     }
     
     @objc func profileIconTapped() {
         let profileVC = ProfileViewController()
         profileVC.modalPresentationStyle = .pageSheet
         present(profileVC, animated: true)
+    }
+    
+    @objc func notificationReceivedForNoteAdded(notification: Notification){
+        if let userInfo = notification.userInfo, let newNote = userInfo["note"] as? Note {
+            notes.append(newNote)
+            notesView.tableViewNote.reloadData()
+        }
     }
     
     @objc func notificationReceivedForUserLoggedIn(notification: Notification){
@@ -74,7 +98,7 @@ class ViewController: UIViewController {
     
     @objc func notificationReceivedForUserRegistered(notification: Notification){
         dismiss(animated: true) { [weak self] in
-            // Fetch notes after successful login
+            // Fetch notes after successful registration
             self?.loadNotes()
         }
     }
@@ -90,7 +114,6 @@ class ViewController: UIViewController {
     }
     
     func loadNotes() {
-            // Add your notes loading logic here
         print("called load notes")
         Task {
             do {
@@ -117,6 +140,52 @@ class ViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
+    
+    func deleteSelected(noteId: String, at indexPath: IndexPath) {
+        let alert = UIAlertController(
+            title: "Delete",
+            message: "Are you sure you want to delete this contact?",
+            preferredStyle: .alert
+        )
+
+        alert.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+            if let self = self {
+                Task {
+                // Call deleteNote to handle the deletion
+                    do {
+                        try await self.deleteNoteById(noteId, at: indexPath)
+                    } catch {
+                        self.showAlert(title: "Error", message: "Failed to delete note: \(error.localizedDescription)")
+                    }
+                }
+            }
+        })
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        self.present(alert, animated: true)
+    }
+
+    
+    func deleteNoteById(_ noteId: String, at indexPath: IndexPath) async throws {
+        if let token = TokenManager.shared.token {
+            
+            do {
+                try await AllAPIs.shared.deleteNote(id: noteId, token: token)
+                
+                await MainActor.run {
+                    self.notes.remove(at: indexPath.row)
+                    self.notesView.tableViewNote.deleteRows(at: [indexPath], with: .automatic)
+                    print("Note deleted")
+                }
+            } catch {
+                throw error // propagate the error to be caught in deleteSelected
+            }
+        } else {
+            showAlert(title: "Error", message: "Could not retrieve token.")
+            return
+        }
+    }
 
 }
 
@@ -135,14 +204,22 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource{
         let note = notes[indexPath.row]
         cell.labelDesc.text = note.text
         
+        let buttonOptions = UIButton(type: .system)
+        buttonOptions.sizeToFit()
+        buttonOptions.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
+        buttonOptions.setImage(
+            UIImage(systemName: "trash"), for: .normal)
+            buttonOptions.addAction(
+                UIAction(
+                    title: "Delete",
+                    handler: { [weak self] _ in
+                        self?.deleteSelected(noteId: note._id, at: indexPath)
+                    }), for: .touchUpInside)
+        cell.accessoryView = buttonOptions
+        
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        getContactDetails(name: self.contactNames[indexPath.row])
-//        detailsController.contactName = contactNames[indexPath.row]
-//        navigationController?.pushViewController(detailsController, animated: true)
-//    }
 }
 
 
