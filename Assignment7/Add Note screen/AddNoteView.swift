@@ -29,12 +29,12 @@ class AddNoteView: UIView {
     
     func setupTextView() {
         textView = UITextView()
-        textView.backgroundColor = UIColor(white: 0.95, alpha: 1.0) // Light background color
-        textView.layer.borderColor = UIColor.lightGray.cgColor // Border color
-        textView.layer.borderWidth = 1.0 // Border width
-        textView.layer.cornerRadius = 8.0 // Rounded corners
-        textView.font = UIFont.systemFont(ofSize: 16) // Font size
-        textView.textColor = .black // Text color
+        textView.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+        textView.layer.borderColor = UIColor.lightGray.cgColor
+        textView.layer.borderWidth = 1.0
+        textView.layer.cornerRadius = 8.0
+        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.textColor = .black
         textView.isScrollEnabled = true
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.delegate = self

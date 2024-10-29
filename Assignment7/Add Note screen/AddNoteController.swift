@@ -55,9 +55,9 @@ class AddNoteController: UIViewController {
                 showAlert(title: "Error", message: "Could not retrieve token.")
             }
                     
-            } else{
-                print("Unable to fetch text")
-            }
+        } else{
+            print("Unable to fetch text")
+        }
     }
     
     func showAlert(title: String, message: String) {

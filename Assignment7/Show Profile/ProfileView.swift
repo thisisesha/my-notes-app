@@ -14,12 +14,14 @@ class ProfileView: UIView {
     var logoutButton: UIButton!
     var closeButton: UIButton!
     var stackView: UIStackView!
+    var containerView: UIView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
     
-        self.backgroundColor = .white
+        self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
+        setUpContainerView()
         setUpNameLabel()
         setUpEmailLabel()
         setUpLogoutButton()
@@ -34,18 +36,32 @@ class ProfileView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setUpContainerView() {
+        containerView = UIView()
+        containerView.backgroundColor = .white
+        containerView.layer.cornerRadius = 12
+        containerView.layer.shadowColor = UIColor.black.cgColor
+        containerView.layer.shadowOpacity = 0.1
+        containerView.layer.shadowOffset = CGSize(width: 0, height: 4)
+        containerView.layer.shadowRadius = 8
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(containerView)
+    }
+    
     func setUpNameLabel(){
         nameLabel = UILabel()
         nameLabel.textAlignment = .center
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        nameLabel.textColor = .darkGray
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-      //  stackView.addSubview(nameLabel)
     }
     
     func setUpEmailLabel(){
         emailLabel = UILabel()
         emailLabel.textAlignment = .center
+        emailLabel.font = UIFont.systemFont(ofSize: 16)
+        emailLabel.textColor = .gray
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
-      //  stackView.addSubview(emailLabel)
     }
     
     func setUpLogoutButton(){
@@ -72,17 +88,24 @@ class ProfileView: UIView {
         stackView.spacing = 16
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(stackView)
+        containerView.addSubview(stackView)
     }
     
     func initConstraints(){
         NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor),
-            
-            logoutButton.widthAnchor.constraint(equalToConstant: 100),
+            containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            containerView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8),
+            containerView.heightAnchor.constraint(equalToConstant: 200),
+                        
+            // Stack view constraints
+            stackView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+                        
+            logoutButton.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.6),
             logoutButton.heightAnchor.constraint(equalToConstant: 44),
-            
+                        
+            // Close button constraints
             closeButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16),
             closeButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])

@@ -127,62 +127,53 @@ class RegisterView: UIView {
     
     func initConstraints() {
         NSLayoutConstraint.activate([
-            // ScrollView constraints
+            
             scrollView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
                     
-            // ContentView constraints
             contentWrapper.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentWrapper.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentWrapper.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentWrapper.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentWrapper.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
                     
-            // Title constraints
             titleLabel.topAnchor.constraint(equalTo: contentWrapper.topAnchor, constant: 40),
             titleLabel.centerXAnchor.constraint(equalTo: contentWrapper.centerXAnchor),
                     
-            // Name field constraints
             nameText.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
             nameText.leadingAnchor.constraint(equalTo: contentWrapper.leadingAnchor, constant: 20),
             nameText.trailingAnchor.constraint(equalTo: contentWrapper.trailingAnchor, constant: -20),
             nameText.heightAnchor.constraint(equalToConstant: 44),
                     
-            // Email field constraints
             emailText.topAnchor.constraint(equalTo: nameText.bottomAnchor, constant: 16),
             emailText.leadingAnchor.constraint(equalTo: nameText.leadingAnchor),
             emailText.trailingAnchor.constraint(equalTo: nameText.trailingAnchor),
             emailText.heightAnchor.constraint(equalToConstant: 44),
                     
-            // Password field constraints
             passwordText.topAnchor.constraint(equalTo: emailText.bottomAnchor, constant: 16),
             passwordText.leadingAnchor.constraint(equalTo: nameText.leadingAnchor),
             passwordText.trailingAnchor.constraint(equalTo: nameText.trailingAnchor),
             passwordText.heightAnchor.constraint(equalToConstant: 44),
                     
-            // Confirm Password field constraints
             confirmPasswordText.topAnchor.constraint(equalTo: passwordText.bottomAnchor, constant: 16),
             confirmPasswordText.leadingAnchor.constraint(equalTo: nameText.leadingAnchor),
             confirmPasswordText.trailingAnchor.constraint(equalTo: nameText.trailingAnchor),
             confirmPasswordText.heightAnchor.constraint(equalToConstant: 44),
                     
-            // Register button constraints
             registerButton.topAnchor.constraint(equalTo: confirmPasswordText.bottomAnchor, constant: 24),
             registerButton.leadingAnchor.constraint(equalTo: nameText.leadingAnchor),
             registerButton.trailingAnchor.constraint(equalTo: nameText.trailingAnchor),
             registerButton.heightAnchor.constraint(equalToConstant: 44),
                     
-            // Login button constraints
             loginButton.topAnchor.constraint(equalTo: registerButton.bottomAnchor, constant: 16),
             loginButton.centerXAnchor.constraint(equalTo: contentWrapper.centerXAnchor),
             loginButton.bottomAnchor.constraint(equalTo: contentWrapper.bottomAnchor, constant: -20),
                     
-            // Activity indicator constraints
             activityIndicator.centerXAnchor.constraint(equalTo: registerButton.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: registerButton.centerYAnchor)
-            ])
+        ])
     }
 
 }

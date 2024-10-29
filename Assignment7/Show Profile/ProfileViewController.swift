@@ -34,7 +34,7 @@ class ProfileViewController: UIViewController {
     
     @objc func logoutTapped() {
         TokenManager.shared.token = nil
-        // Dismiss the profile modal and navigate to login
+        
         if let presentingVC = presentingViewController as? UINavigationController,
             let mainVC = presentingVC.viewControllers.first as? ViewController {
                 dismiss(animated: true) {

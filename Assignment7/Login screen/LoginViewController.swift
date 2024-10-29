@@ -40,10 +40,12 @@ class LoginViewController: UIViewController {
             
             if !isValidEmail(emailText) {
                 showAlert(title: "Invalid Email!", message: "Please enter a valid email address.")
+                return
             }
             
             if passwordText.isEmpty {
                 showAlert(title: "Password cannot be empty!", message: "Please enter password.")
+                return
             }
             
             setLoading(true)
@@ -59,12 +61,17 @@ class LoginViewController: UIViewController {
                         print("logged in")
                         notificationCenter.post(name: .loggedIn, object: nil)
                     }
+                } catch AuthError.custom(let errorMessage) {
+                    await MainActor.run {
+                        setLoading(false)
+                        showAlert(title: "Login Failed", message: errorMessage)
+                    }
                 } catch {
                     print("Login error: \(error)")
                     await MainActor.run {
                         setLoading(false)
                         showAlert(title: "Login Failed",
-                                message: "Invalid credentials or network error. Please try again.")
+                                message: "An unexpected error occurred. Please try again.")
                     }
                 }
             }

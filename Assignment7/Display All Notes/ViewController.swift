@@ -27,7 +27,6 @@ class ViewController: UIViewController {
             print("calling logging screen")
             showLoginScreen()
         } else {
-            // Load notes
             loadNotes()
         }
         
@@ -151,7 +150,7 @@ class ViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
             if let self = self {
                 Task {
-                // Call deleteNote to handle the deletion
+                    // Call deleteNote to handle the deletion
                     do {
                         try await self.deleteNoteById(noteId, at: indexPath)
                     } catch {
@@ -179,7 +178,7 @@ class ViewController: UIViewController {
                     print("Note deleted")
                 }
             } catch {
-                throw error // propagate the error to be caught in deleteSelected
+                throw error 
             }
         } else {
             showAlert(title: "Error", message: "Could not retrieve token.")

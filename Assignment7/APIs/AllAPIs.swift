@@ -35,9 +35,18 @@ class AllAPIs{
                     switch response.result {
                         case .success(let authResponse):
                             continuation.resume(returning: authResponse.token)
-                        case .failure(let error):
-                            print("Failed with error: \(error)")
-                            continuation.resume(throwing: error)
+                        case .failure:
+                            if let data = response.data {
+                                if let apiError = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
+                                    continuation.resume(throwing: AuthError.custom(apiError.message))
+                                } else if let plainTextError = String(data: data, encoding: .utf8) {
+                                    continuation.resume(throwing: AuthError.custom(plainTextError))
+                                } else {
+                                    continuation.resume(throwing: AuthError.unknown)
+                                }
+                            } else {
+                                continuation.resume(throwing: AuthError.unknown)
+                        }
                     }
                 }
         }
@@ -63,13 +72,22 @@ class AllAPIs{
                     switch response.result {
                         case .success(let authResponse):
                             continuation.resume(returning: authResponse.token)
-                        case .failure(let error):
-                            print("Failed with error: \(error)")
-                            continuation.resume(throwing: error)
+                        case .failure:
+                            if let data = response.data {
+                                if let apiError = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
+                                    continuation.resume(throwing: AuthError.custom(apiError.message))
+                                } else if let plainTextError = String(data: data, encoding: .utf8) {
+                                    continuation.resume(throwing: AuthError.custom(plainTextError))
+                                } else {
+                                    continuation.resume(throwing: AuthError.unknown)
+                                }
+                            } else {
+                                continuation.resume(throwing: AuthError.unknown)
+                            }
+                        }
                     }
-                }
+            }
         }
-    }
     
     func getUserDetails(token: String) async throws -> User {
         let url = "\(authBaseURL)/me"

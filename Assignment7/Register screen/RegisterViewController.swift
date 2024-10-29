@@ -44,22 +44,27 @@ class RegisterViewController: UIViewController {
             
             if nameText.isEmpty {
                 showAlert(title: "All fields are mandatory!", message: "Please enter your name.")
+                return
             }
             
             if emailText.isEmpty {
                 showAlert(title: "All fields are mandatory!", message: "Please enter your email.")
+                return
             }
             
             if !isValidEmail(emailText) {
                 showAlert(title: "Invalid Email!", message: "Please enter a valid email.")
+                return
             }
             
             if passwordText.isEmpty {
                 showAlert(title: "All fields are mandatory!", message: "Please enter your password.")
+                return
             }
             
             if passwordText != confirmedPassword {
                 showAlert(title: "Passwords do not match!", message: "Please enter the correct password.")
+                return
             }
             
             setLoading(true)
@@ -74,6 +79,16 @@ class RegisterViewController: UIViewController {
                         setLoading(false)
                         print("registered")
                         notificationCenter.post(name: .registered, object: nil)
+                    }
+                } catch let error as AuthError {
+                    await MainActor.run {
+                        setLoading(false)
+                        switch error {
+                        case .custom(let message):
+                            showAlert(title: "User with same email already exists!", message: message)
+                        case .unknown:
+                            showAlert(title: "Registration Failed", message: "An unknown error occurred. Please try again.")
+                        }
                     }
                 } catch {
                     print("Sign up error: \(error)")
@@ -104,7 +119,7 @@ class RegisterViewController: UIViewController {
             registerView.loginButton.setTitle("", for: .normal)
         } else {
             registerView.activityIndicator.stopAnimating()
-            registerView.loginButton.setTitle("Login", for: .normal)
+            registerView.loginButton.setTitle("Login instead?", for: .normal)
         }
     }
         
